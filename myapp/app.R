@@ -1,7 +1,7 @@
 
 
 library(shiny)
-
+a=read.csv('../datasets/Virtual_Reality_in_Education_Impact.csv')
 # Define UI for dataset viewer app ----
 ui <- fluidPage(
 
@@ -62,7 +62,7 @@ server <- function(input, output) {
   datasetInput <- reactive({
     switch(input$dataset,
            "rock" = rock,
-           "pressure" = pressure,
+           "pressure" = a,
            "cars" = cars)
   })
 

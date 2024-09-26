@@ -1,0 +1,19 @@
+---
+title: "Untitled"
+output: html_document
+date: "2024-09-26"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+
+a=read.csv('datasets/Virtual_Reality_in_Education_Impact.csv')
+```
+```{r}
+summary(a)
+```
+
+
