@@ -1,7 +1,7 @@
 
 
 library(shiny)
-#a=read.csv('../datasets/Virtual_Reality_in_Education_Impact.csv')
+
 # Define UI for dataset viewer app ----
 ui <- fluidPage(
 
@@ -43,7 +43,17 @@ ui <- fluidPage(
       verbatimTextOutput("summary"),
 
       # Output: HTML table with requested number of observations ----
-      tableOutput("view")
+      tableOutput("view"),
+
+      # File input for CSV file upload
+      fileInput("file1", "Choose CSV File",
+                multiple = FALSE,
+                accept = c("text/csv",
+                           "text/comma-separated-values,text/plain",
+                           ".csv")),
+
+      # Table output to display the contents of the uploaded file
+      tableOutput("contents")
 
     )
   )
@@ -62,8 +72,20 @@ server <- function(input, output) {
   datasetInput <- reactive({
     switch(input$dataset,
            "rock" = rock,
-           "pressure" = rock,
+           "pressure" = pressure,
            "cars" = cars)
+  })
+
+  output$file1_contents <- renderPrint({print(input$file1)})
+
+  output$contents <- renderTable({
+    file <- input$file1
+    req(file)
+
+    ext <- tools::file_ext(file$datapath)
+    validate(need(ext == "csv", "Please upload a csv file"))
+
+    read.csv(file$datapath)
   })
 
   # Create caption ----
