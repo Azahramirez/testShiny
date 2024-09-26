@@ -16,4 +16,36 @@ a=read.csv('datasets/Virtual_Reality_in_Education_Impact.csv')
 summary(a)
 ```
 
+```{r}
+data(rock)
+```
+
+
+```{r}
+summary(rock)
+```
+
+```{r}
+lol=rock
+lol
+```
+```{r}
+lol[,1] = lol[,1]*100
+lol
+```
+
+```{r}
+m1c <- function(df,n) {
+  # Check if the data frame has at least one column
+  if (ncol(df) < 1) {
+    stop("The data frame must have at least one column.")
+  }
+
+  # Multiply the first column by n
+  df[, 1] <- df[, 1] * n
+
+  # Return the modified data frame
+  return(df)
+}
+```
 

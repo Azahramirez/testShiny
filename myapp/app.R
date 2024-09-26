@@ -1,7 +1,20 @@
 
 
 library(shiny)
+# Function to multiply the first column of a data frame by 100
+m1c <- function(df,n) {
+  n=as.integer(n)
+  # Check if the data frame has at least one column
+  if (ncol(df) < 1) {
+    stop("The data frame must have at least one column.")
+  }
 
+  # Multiply the first column by n
+  df[, 1] <- df[, 1] * n
+
+  # Return the modified data frame
+  return(df)
+}
 # Define UI for dataset viewer app ----
 ui <- fluidPage(
 
@@ -14,6 +27,13 @@ ui <- fluidPage(
     # Sidebar panel for inputs ----
     sidebarPanel(
 
+      # File input for CSV file upload
+      fileInput("file1", "Choose CSV File",
+                multiple = FALSE,
+                accept = c("text/csv",
+                           "text/comma-separated-values,text/plain",
+                           ".csv")),
+
       # Input: Text for providing a caption ----
       # Note: Changes made to the caption in the textInput control
       # are updated in the output area immediately as you type
@@ -24,12 +44,20 @@ ui <- fluidPage(
       # Input: Selector for choosing dataset ----
       selectInput(inputId = "dataset",
                   label = "Choose a dataset:",
-                  choices = c("rock", "pressure", "cars")),
+                  choices = c("rock", "pressure", "cars","multiply")),
 
       # Input: Numeric entry for number of obs to view ----
       numericInput(inputId = "obs",
                    label = "Number of observations to view:",
-                   value = 10)
+                   value = 10),
+
+      selectInput(
+        "select",
+        "Select options below:",
+        list("Choice 1A" = 0, "Choice 1B" = 10, "Choice 1C" = 100),
+        multiple = FALSE
+      ),
+
 
     ),
 
@@ -39,18 +67,15 @@ ui <- fluidPage(
       # Output: Formatted text for caption ----
       h3(textOutput("caption", container = span)),
 
+
+
       # Output: Verbatim text for data summary ----
       verbatimTextOutput("summary"),
 
       # Output: HTML table with requested number of observations ----
       tableOutput("view"),
 
-      # File input for CSV file upload
-      fileInput("file1", "Choose CSV File",
-                multiple = FALSE,
-                accept = c("text/csv",
-                           "text/comma-separated-values,text/plain",
-                           ".csv")),
+
 
       # Table output to display the contents of the uploaded file
       tableOutput("contents")
@@ -71,10 +96,14 @@ server <- function(input, output) {
   #    i.e. it only executes a single time
   datasetInput <- reactive({
     switch(input$dataset,
-           "rock" = rock,
+           "rock" = m1c(rock,input$select),
            "pressure" = pressure,
            "cars" = cars)
+
   })
+
+
+
 
   output$file1_contents <- renderPrint({print(input$file1)})
 
@@ -110,6 +139,7 @@ server <- function(input, output) {
   output$summary <- renderPrint({
     dataset <- datasetInput()
     summary(dataset)
+
   })
 
   # Show the first "n" observations ----
