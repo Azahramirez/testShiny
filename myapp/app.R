@@ -1,7 +1,7 @@
 
 
 library(shiny)
-a=read.csv('../datasets/Virtual_Reality_in_Education_Impact.csv')
+#a=read.csv('../datasets/Virtual_Reality_in_Education_Impact.csv')
 # Define UI for dataset viewer app ----
 ui <- fluidPage(
 
@@ -24,7 +24,7 @@ ui <- fluidPage(
       # Input: Selector for choosing dataset ----
       selectInput(inputId = "dataset",
                   label = "Choose a dataset:",
-                  choices = c("rock", "custom", "cars")),
+                  choices = c("rock", "pressure", "cars")),
 
       # Input: Numeric entry for number of obs to view ----
       numericInput(inputId = "obs",
@@ -62,7 +62,7 @@ server <- function(input, output) {
   datasetInput <- reactive({
     switch(input$dataset,
            "rock" = rock,
-           "custom" = a,
+           "pressure" = rock,
            "cars" = cars)
   })
 
