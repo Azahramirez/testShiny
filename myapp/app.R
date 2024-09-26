@@ -62,7 +62,7 @@ server <- function(input, output) {
   datasetInput <- reactive({
     switch(input$dataset,
            "rock" = rock,
-           "pressure" = a,
+           "custom" = a,
            "cars" = cars)
   })
 
