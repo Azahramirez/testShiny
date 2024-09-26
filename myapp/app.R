@@ -24,7 +24,7 @@ ui <- fluidPage(
       # Input: Selector for choosing dataset ----
       selectInput(inputId = "dataset",
                   label = "Choose a dataset:",
-                  choices = c("rock", "pressure", "cars")),
+                  choices = c("rock", "custom", "cars")),
 
       # Input: Numeric entry for number of obs to view ----
       numericInput(inputId = "obs",
